@@ -3,12 +3,12 @@ const app = express()
 const Usuario = require('../model/Usuario')
 const bcrypt = require('bcrypt')
 const _ = require('underscore')
+const {verificaToken, verificaAdminRol} = require('../middleware/autenticacion')
 
-app.get('/usuario', function(req, res){
+app.get('/usuario',verificaToken ,(req, res) => {
     let desde = Number(req.query.desde) || 0
     let limite = Number(req.query.limite) || 5
-    let estado = Number(req.query.estado) || true
-
+    let estado = req.query.estado || true //Something weird happens when you wrap the 'req.query.estado' with a boolean
     Usuario.find({estado}, 'role estado google nombre email')
             .skip(desde)
             .limit(limite)
@@ -30,7 +30,7 @@ app.get('/usuario', function(req, res){
             })
 });
 
-app.post('/usuario', function(req, res){
+app.post('/usuario', [verificaToken, verificaAdminRol],function(req, res){
     let body = req.body;
     let usuario = new Usuario({
         nombre: body.nombre,
@@ -54,7 +54,7 @@ app.post('/usuario', function(req, res){
     });
 })
 
-app.put('/usuario/:id', function(req, res){
+app.put('/usuario/:id', [verificaToken, verificaAdminRol],function(req, res){
     let id = req.params.id;
     //let body = req.body
     let body = _.pick(req.body, ['email','img','role','estado', 'nombre'])
@@ -74,7 +74,7 @@ app.put('/usuario/:id', function(req, res){
     })
 })
 
-app.delete('/usuario/:id', (req, res) => {
+app.delete('/usuario/:id', [verificaToken, verificaAdminRol], (req, res) => {
     let id = req.params.id
     let body = _.pick(req.body, ['estado'])
 
