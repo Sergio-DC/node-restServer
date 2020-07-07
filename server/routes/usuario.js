@@ -77,7 +77,8 @@ app.put('/usuario/:id', [verificaToken, verificaAdminRol],function(req, res){
 app.delete('/usuario/:id', [verificaToken, verificaAdminRol], (req, res) => {
     let id = req.params.id
     let body = _.pick(req.body, ['estado'])
-
+    console.log("ID: ", id);
+    console.log("Body: ", body);
     // Usuario.findByIdAndRemove(id, (err, docUsuario) => {
     //     if(err) {
     //         return res.status(400).json({
