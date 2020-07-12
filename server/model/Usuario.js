@@ -39,7 +39,12 @@ const schemaUsuario = new Schema({
     google: {
         type: Boolean, 
         default: false
+    },
+    categorias : [{
+        type: mongoose.Types.ObjectId,
+        ref: 'Categoria'
     }
+    ]
     
 })
 //El método toJSON en un esquema siempre se llama cuando se intenta imprimir

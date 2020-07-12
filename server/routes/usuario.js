@@ -30,6 +30,23 @@ app.get('/usuario',verificaToken ,(req, res) => {
             })
 });
 
+//Obtener usuario por nombre
+app.get('/usuario/:nombre', (req, res) => {
+    let filter = {nombre : req.params.nombre}
+    Usuario.findOne(filter, (err, docUsuario) => {
+        if(err)
+            return res.status(400).json({
+                ok: false,
+                err
+            })
+        res.json({
+            ok: true,
+            docUsuario
+        })
+    })
+})
+
+
 app.post('/usuario', [verificaToken, verificaAdminRol],function(req, res){
     let body = req.body;
     let usuario = new Usuario({
