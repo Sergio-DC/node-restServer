@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { json } = require('body-parser')
+// const { json } = require('body-parser')
 
 let verificaToken = (req, res, next) => {
     let token = req.get('token')
